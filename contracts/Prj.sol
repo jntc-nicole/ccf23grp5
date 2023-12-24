@@ -143,7 +143,7 @@ contract Prj {
     }
 
     // returns all groups
-    function seegrplist() external view returns (grp[] memory) {
+    function getallgrp() external view returns (grp[] memory) {
         grp[] memory g = grplist;
         return g;
     }
