@@ -11,6 +11,7 @@ contract Prj {
         string name;
     }
 
+    // a group chat's code and name
     struct grp {
         bytes32 grpcode;
         string name;
@@ -23,7 +24,7 @@ contract Prj {
         grp[] grps;
     }
 
-    // a message's sender, timestamp, content, and like count
+    // a message's sender, timestamp, and content
     struct msgb {
         address sender;
         uint256 timestamp;
