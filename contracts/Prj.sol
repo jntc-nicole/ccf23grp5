@@ -210,6 +210,9 @@ contract Prj {
 
     // read from feed
     function feed(string calldata grpname) external view returns (msgb[] memory) {
+        // check if the user is in the group
+        require(ifexist(msg.sender),"An account is required!");
+        require(ifmember(msg.sender,grpname),"Not in group!");
         return msgs[_getgrpcode(grpname)];
     }
 }
