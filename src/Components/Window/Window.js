@@ -16,7 +16,10 @@ function Window(props) {
   return (
     <div className='window'>
       <div>
-        <h1>{props.currentgrp}</h1>
+        <div className='head'>
+          <h1>{props.currentgrp}</h1>
+          <input onClick={props.logout} />
+        </div>
         <div className='overflow'>
           {msgs}
         </div>

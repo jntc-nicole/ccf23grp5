@@ -1,3 +1,16 @@
+.head {
+    display: grid;
+    grid grid-template-rows: auto 10%;
+}
+
+.head > h1 {
+    float: left;
+}
+
+.head > input {
+    float: right;
+}
+
 .overflow {
     overflow: scroll;
     width: 100%;
