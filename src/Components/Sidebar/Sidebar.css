@@ -1,0 +1,13 @@
+.overflow {
+    overflow: scroll;
+}
+
+.sidebar {
+    display: grid;
+    grid-template-rows: 80% 20%;
+}
+
+.grpitm {
+    width: auto;
+    min-width: 100%;
+}
