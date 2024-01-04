@@ -8,8 +8,8 @@ function Window(props) {
     }
     return (
     <div>
-      <h5>{msg.sender + " " + msg.time}</h5>
-      <p>{msg.msg}</p>
+      <h3 className='h3'>{msg.sender + " at " + msg.time}</h3>
+      <p className='p'>{msg.msg}</p>
     </div>
     );
   });
@@ -17,8 +17,8 @@ function Window(props) {
     <div className='window'>
       <div>
         <div className='head'>
-          <h1>{props.currentgrp}</h1>
-          <input onClick={props.logout} />
+          <h1 className='h1'>{props.currentgrp}</h1>
+          <input value="Logout" type="button" onClick={props.logout} />
         </div>
         <div className='overflow'>
           {msgs}

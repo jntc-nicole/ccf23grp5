@@ -1,6 +1,10 @@
 .gridbox {
     display: grid;
-    grid-template-columns: 18% 76%;
+    grid-template-columns: 18% 3% 76%;
     column-gap: 1em;
     height: 100%;
+}
+
+.vertline {
+    border-left: solid #000000;
 }

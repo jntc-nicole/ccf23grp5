@@ -51,6 +51,16 @@ contract Prj {
         return bytes(users[pubkey].name).length > 0;
     }
 
+    // check if the user exists
+    function doiexist() public view returns (bool) {
+        return bytes(users[msg.sender].name).length > 0;
+    }
+
+    // get name
+    function myname() public view returns (string memory) {
+        return users[msg.sender].name;        
+    }
+
     // make account with input nickname
     function mkacc(string calldata name) external {
         //check if user exists already
@@ -135,13 +145,13 @@ contract Prj {
     }
 
     // adds user to a group
-    function _addgrp(address ego, string calldata grpname) internal {
+    /*function _addgrp(address ego, string calldata grpname) internal {
         grp memory newgrp = grp(_getgrpcode(grpname),grpname);
         users[ego].grps.push(newgrp);
         if (ingrplist(newgrp,grplist) == false) {
             grplist.push(newgrp);
         }
-    }
+    }*/
 
     // returns all groups
     function getallgrp() external view returns (grp[] memory) {
@@ -154,7 +164,11 @@ contract Prj {
         // check if the user exists and is in not the group
         require(ifexist(msg.sender),"An account is required!");
         require(ifmember(msg.sender,grpname) == false,"Already in group!");
-        _addgrp(msg.sender,grpname);
+        grp memory newgrp = grp(_getgrpcode(grpname),grpname);
+        users[msg.sender].grps.push(newgrp);
+        if (ingrplist(newgrp,grplist) == false) {
+            grplist.push(newgrp);
+        }
     }
 
     // get friend list

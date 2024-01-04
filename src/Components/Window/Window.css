@@ -1,6 +1,6 @@
 .head {
     display: grid;
-    grid grid-template-rows: auto 10%;
+    grid-template-columns: auto 10%;
 }
 
 .head > h1 {
@@ -33,4 +33,16 @@
 #newmsg {
     text-align: start;
     overflow-y: scroll;
+}
+
+.h1 {
+    font-size: 3em;
+}
+
+.h3 {
+    font-size: 1.8em;
+}
+
+.p {
+    font-size: 1.5em;
 }

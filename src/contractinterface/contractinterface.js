@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import Web3Modal from "web3modal";
+//import Web3Modal from "web3modal";
 
 import { cntrabi,cntraddr } from "./constants";
 
@@ -30,15 +30,13 @@ export const connectwallet = async () => {
 };
 
 const fetchcntr = (signerprovider) => {
-    return new ethers.Contract(cntrabi,cntraddr,signerprovider);
+    return new ethers.Contract(cntraddr,cntrabi,signerprovider);
 };
 
 export const connectcontract = async () => {
     try {
-        const w3m = Web3Modal();
-        const connection = await w3m.connect();
-        const provider = new ethers.BrowserProvider(connection);
-        const signer = provider.getSigner();
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
         const cntr = fetchcntr(signer);
         return cntr;
     } catch (error) {
@@ -47,6 +45,6 @@ export const connectcontract = async () => {
 };
 
 export const converttime = (time) => {
-    const t = new Date(time.toNumber());
-    return (t.getHours() + ':' + t.getMinutes + ':' + t.getSeconds() + ' ' + t.getDate() + '/' + (t.getMonth() + 1) + '/' + t.getFullYear());
+    const t = new Date(Number(time)*1000);
+    return (t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds() + ' ' + t.getDate() + '/' + (t.getMonth() + 1) + '/' + t.getFullYear());
 }
