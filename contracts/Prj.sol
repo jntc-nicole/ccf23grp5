@@ -4,23 +4,15 @@
 pragma solidity >=0.8.12 <0.9.0;
 
 contract Prj {
-
-    // a friend's public key and nickname
-    struct frd {
-        address pubkey;
-        string name;
-    }
-
     // a group chat's code and name
     struct grp {
         bytes32 grpcode;
         string name;
     }
 
-    // a user's nickname and friend list
+    // a user's nickname and group list
     struct user {
         string name;
-        frd[] frds;
         grp[] grps;
     }
 
@@ -31,14 +23,6 @@ contract Prj {
         string txt;
     }
 
-    // a user's name and address
-    struct userloc {
-        string name;
-        address accaddr;
-    }
-
-    // list of all users
-    userloc[] userlocs;
     // list of groups
     grp[] grplist;
     // list of all user data
@@ -68,7 +52,6 @@ contract Prj {
         //check for valid nickname
         require(bytes(name).length > 0, "Input non empty nickname!");
         users[msg.sender].name = name;
-        userlocs.push(userloc(name,msg.sender));
     }
 
     // get username
@@ -76,46 +59,6 @@ contract Prj {
         //check if user does not exist yet
         require(ifexist(msg.sender),"User does not exist!");
         return users[pubkey].name;
-    }
-
-    // get list of users
-    function getuserlocs() public view returns (userloc[] memory) {
-        return userlocs;
-    }
-
-    // check if friend
-    function iffrd(address p1,address p2) internal view returns (bool) {
-        // makes "p2" have the longer friend list
-        if (users[p1].frds.length > users[p2].frds.length) {
-            address tmp = p1;
-            p1 = p2;
-            p2 = tmp;
-        }
-        for (uint256 i = 0;i < users[p1].frds.length;i++) {
-            if (users[p1].frds[i].pubkey == p2) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // adds the friends without check
-    function _addfrd(address ego, address frdkey, string memory name) internal {
-        frd memory newfrd = frd(frdkey,name);
-        users[ego].frds.push(newfrd);
-    }
-
-    // checks and calls add friend
-    function addfrd(address frdkey, string calldata name) external {
-        // check if users exist already
-        require(ifexist(msg.sender),"An account is required!");
-        require(ifexist(frdkey),"User does not exist!");
-        // prevent adding self and friends as friends
-        require(msg.sender != frdkey,"Don't add yourself!");
-        require(iffrd(msg.sender,frdkey) == false, "Already friends!");
-        // add friends for both users
-        _addfrd(msg.sender,frdkey,name);
-        _addfrd(frdkey,msg.sender,users[msg.sender].name);
     }
 
     // computes group hash
@@ -143,16 +86,7 @@ contract Prj {
         }
         return false;
     }
-
-    // adds user to a group
-    /*function _addgrp(address ego, string calldata grpname) internal {
-        grp memory newgrp = grp(_getgrpcode(grpname),grpname);
-        users[ego].grps.push(newgrp);
-        if (ingrplist(newgrp,grplist) == false) {
-            grplist.push(newgrp);
-        }
-    }*/
-
+    
     // returns all groups
     function getallgrp() external view returns (grp[] memory) {
         grp[] memory g = grplist;
@@ -171,12 +105,7 @@ contract Prj {
         }
     }
 
-    // get friend list
-    function getfrdlist() external view returns (frd[] memory) {
-        return users[msg.sender].frds;
-    }
-
-    // get friend list
+    // get group list
     function getgrplist() external view returns (grp[] memory) {
         return users[msg.sender].grps;
     }
@@ -189,28 +118,7 @@ contract Prj {
             return keccak256(abi.encodePacked(p2,p1));
         }
     }
-
-    // send a message
-    function sendmsg(address frdkey, string calldata _msg) external {
-        // check for user existence and friendship status
-        require(ifexist(msg.sender),"An account is required!");
-        require(ifexist(frdkey),"Account does not exist!");
-        require(iffrd(msg.sender,frdkey), "You are not friends...");
-
-        // get chat code
-        bytes32 chtcode = _getchtcode(msg.sender,frdkey);
-        // create new message
-        msgb memory newmsg = msgb(msg.sender,block.timestamp,_msg);
-        // push message to chat with the corresponding chat code
-        msgs[chtcode].push(newmsg);
-    }
-
-    // read private messages from a friend
-    function rdmsg(address frdkey) external view returns (msgb[] memory) {
-        bytes32 chtcode = _getchtcode(msg.sender,frdkey);
-        return msgs[chtcode];
-    }
-
+    
     // post to a group
     function post(string calldata grpname, string calldata _msg) external {
         // check if the user is in the group

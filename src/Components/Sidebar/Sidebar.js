@@ -1,11 +1,13 @@
 import './Sidebar.css';
 
 function Sidebar(props) {
+  // creates list of buttons for selecting groups
   var grps = props.grps.map((grp) => {
     return (
       <input className="grpitm bigger" type="button" value={grp} onClick={() => {props.changegrp(grp)}} />
     );
   })
+  // shows the user's name, then the user's groups, then the functionality for adding groups
   return (
     <div className='sidebar'>
       <h1 className='h1'>{props.myusername + "'s Groups:"}</h1>

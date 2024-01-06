@@ -1,6 +1,7 @@
 import './Window.css';
 
 function Window(props) {
+  // formatting of messages
   let msgs = null;
   msgs = props.msgs.map((msg) => {
     if (!msg) {
@@ -13,6 +14,9 @@ function Window(props) {
     </div>
     );
   });
+  // head shows currently selected group and logout button
+  // messages are shown below that
+  // text input and post button are in the sendbox
   return (
     <div className='window'>
       <div>
