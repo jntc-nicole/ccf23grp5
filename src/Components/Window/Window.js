@@ -10,7 +10,7 @@ function Window(props) {
     return (
     <div>
       <h3 className='h3'>{msg.sender + " at " + msg.time}</h3>
-      <p className='p'>{msg.msg}</p>
+      <div className='p'>{msg.msg}</div>
     </div>
     );
   });

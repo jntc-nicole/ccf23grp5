@@ -45,6 +45,13 @@ contract Prj {
         return users[msg.sender].name;        
     }
 
+    // get username
+    function getname(address pubkey) external view returns (string memory) {
+        //check if user does not exist yet
+        require(ifexist(msg.sender),"User does not exist!");
+        return users[pubkey].name;
+    }
+
     // make account with input nickname
     function mkacc(string calldata name) external {
         //check if user exists already
@@ -52,13 +59,6 @@ contract Prj {
         //check for valid nickname
         require(bytes(name).length > 0, "Input non empty nickname!");
         users[msg.sender].name = name;
-    }
-
-    // get username
-    function getname(address pubkey) external view returns (string memory) {
-        //check if user does not exist yet
-        require(ifexist(msg.sender),"User does not exist!");
-        return users[pubkey].name;
     }
 
     // computes group hash
@@ -86,6 +86,11 @@ contract Prj {
         }
         return false;
     }
+
+    // get group list
+    function getgrplist() external view returns (grp[] memory) {
+        return users[msg.sender].grps;
+    }
     
     // returns all groups
     function getallgrp() external view returns (grp[] memory) {
@@ -105,20 +110,6 @@ contract Prj {
         }
     }
 
-    // get group list
-    function getgrplist() external view returns (grp[] memory) {
-        return users[msg.sender].grps;
-    }
-
-    // get combined chat code: a combined hash of the ordered addresses of the 2 users
-    function _getchtcode(address p1, address p2) internal pure returns (bytes32) {
-        if (p1 < p2) {
-            return keccak256(abi.encodePacked(p1,p2));
-        } else {
-            return keccak256(abi.encodePacked(p2,p1));
-        }
-    }
-    
     // post to a group
     function post(string calldata grpname, string calldata _msg) external {
         // check if the user is in the group
